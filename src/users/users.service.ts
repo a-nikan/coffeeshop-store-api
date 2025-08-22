@@ -24,6 +24,7 @@ export class UsersService {
     });
 
     // IMPORTANT: Remove the hashed password before returning the user object
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { hashedPassword: removedPassword, ...cleanUser } = user;
 
     return cleanUser;
@@ -34,6 +35,7 @@ export class UsersService {
 
     // Remove the hashed password from every user object in the array
     const cleanUsers = users.map((user) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { hashedPassword, ...cleanUser } = user;
       return cleanUser;
     });
@@ -46,6 +48,7 @@ export class UsersService {
     });
 
     // Remove the hashed password before returning
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { hashedPassword, ...cleanUser } = user;
     return cleanUser;
   }
@@ -79,6 +82,7 @@ export class UsersService {
     });
 
     // Remove the hashed password from the returned object
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { hashedPassword, ...cleanUser } = updatedUser;
     return cleanUser;
   }
@@ -90,7 +94,14 @@ export class UsersService {
       where: { id },
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { hashedPassword, ...cleanUser } = deletedUser;
     return cleanUser;
+  }
+
+  async findUserForAuth(email: string) {
+    return this.prisma.user.findUnique({
+      where: { email },
+    });
   }
 }
