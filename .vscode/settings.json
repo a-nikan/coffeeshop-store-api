@@ -1,0 +1,4 @@
+{
+  "files.eol": "\n", // Always use LF
+  "editor.formatOnSave": true // Auto-fix on save
+}
