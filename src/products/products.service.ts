@@ -9,6 +9,10 @@ export class ProductsService {
   async create(createProductDto: CreateProductDto) {
     const product = await this.prismaService.product.create({
       data: createProductDto,
+      include: {
+        // <-- Add this block
+        category: true,
+      },
     });
     return product;
   }
@@ -33,11 +37,13 @@ export class ProductsService {
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
-    const product = await this.prismaService.product.update({
+    return this.prismaService.product.update({
       where: { id },
       data: updateProductDto,
+      include: {
+        category: true,
+      },
     });
-    return product;
   }
 
   async remove(id: number) {

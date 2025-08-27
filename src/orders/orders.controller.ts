@@ -14,6 +14,7 @@ import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { Role } from '@prisma/client';
 import { Request as ExpressRequest } from 'express';
 import { User } from '@prisma/client';
+import type { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 
 @Controller('orders')
 export class OrdersController {
@@ -34,5 +35,11 @@ export class OrdersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   findAll() {
     return this.ordersService.findAll();
+  }
+  @Get('mine') // This creates the GET /orders/mine route
+  @UseGuards(JwtAuthGuard) // Protect the route
+  findMyOrders(@Request() req: RequestWithUser) {
+    const userId = req.user.id;
+    return this.ordersService.findAllForUser(userId);
   }
 }
