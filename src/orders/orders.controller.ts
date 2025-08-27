@@ -5,6 +5,9 @@ import {
   Body,
   UseGuards,
   Request,
+  Patch,
+  ParseIntPipe,
+  Param,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -15,6 +18,7 @@ import { Role } from '@prisma/client';
 import { Request as ExpressRequest } from 'express';
 import { User } from '@prisma/client';
 import type { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -41,5 +45,15 @@ export class OrdersController {
   findMyOrders(@Request() req: RequestWithUser) {
     const userId = req.user.id;
     return this.ordersService.findAllForUser(userId);
+  }
+  @Patch(':id')
+  @Roles(Role.ADMIN, Role.STAFF)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  updateOrderStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateOrderDto: UpdateOrderDto,
+  ) {
+    // The '+' converts the id string from the URL into a number
+    return this.ordersService.updateStatus(+id, updateOrderDto.status);
   }
 }

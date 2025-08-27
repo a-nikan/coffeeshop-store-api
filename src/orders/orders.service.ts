@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { OrderStatus } from '@prisma/client';
 
 @Injectable()
 export class OrdersService {
@@ -88,6 +89,15 @@ export class OrdersService {
       orderBy: {
         createdAt: 'desc',
       },
+    });
+  }
+
+  async updateStatus(orderId: number, status: OrderStatus) {
+    // It's good practice to ensure the status is a valid OrderStatus enum
+    // but our DTO and ValidationPipe already handle this.
+    return this.prismaService.order.update({
+      where: { id: orderId },
+      data: { status: status }, // We cast to any to satisfy Prisma's strict enum type
     });
   }
 }
