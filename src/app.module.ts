@@ -8,6 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
+import { StripeModule } from './stripe/stripe.module';
+import { PaymentsController } from './payments/payments.controller';
 
 @Module({
   imports: [
@@ -18,8 +20,9 @@ import { OrdersModule } from './orders/orders.module';
     ProductsModule,
     CategoriesModule,
     OrdersModule,
+    StripeModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, PaymentsController],
   providers: [AppService],
 })
 export class AppModule {}
