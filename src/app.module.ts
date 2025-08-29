@@ -10,6 +10,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import { StripeModule } from './stripe/stripe.module';
 import { PaymentsController } from './payments/payments.controller';
+import { EventsGateway } from './events/events.gateway';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { PaymentsController } from './payments/payments.controller';
     StripeModule,
   ],
   controllers: [AppController, PaymentsController],
-  providers: [AppService],
+  providers: [AppService, EventsGateway],
 })
 export class AppModule {}

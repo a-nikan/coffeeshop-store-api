@@ -3,10 +3,14 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { OrderStatus } from '@prisma/client';
+import { EventsGateway } from 'src/events/events.gateway';
 
 @Injectable()
 export class OrdersService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private readonly eventsGateway: EventsGateway,
+  ) {}
   async create(createOrderDto: CreateOrderDto, userId: number) {
     // 1. Extract productIds from DTO
     const productIds = createOrderDto.items.map((item) => item.productId);
@@ -56,7 +60,7 @@ export class OrdersService {
         items: true, // Include the newly created items in the response
       },
     });
-
+    this.eventsGateway.sendNewOrderNotification(order);
     return order;
   }
 
