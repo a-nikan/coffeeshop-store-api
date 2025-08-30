@@ -11,6 +11,7 @@ import { OrdersModule } from './orders/orders.module';
 import { StripeModule } from './stripe/stripe.module';
 import { PaymentsController } from './payments/payments.controller';
 import { EventsGateway } from './events/events.gateway';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { EventsGateway } from './events/events.gateway';
     CategoriesModule,
     OrdersModule,
     StripeModule,
+    UploadsModule,
   ],
   controllers: [AppController, PaymentsController],
   providers: [AppService, EventsGateway],
