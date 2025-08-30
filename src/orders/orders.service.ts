@@ -39,12 +39,23 @@ export class OrdersService {
       total = total.add(itemTotal);
     }
 
+    // 1. Prepare the address data if it exists
+    const addressData = createOrderDto.shippingAddress
+      ? {
+          shippingStreet: createOrderDto.shippingAddress.street,
+          shippingCity: createOrderDto.shippingAddress.city,
+          shippingProvince: createOrderDto.shippingAddress.province,
+          shippingPostalCode: createOrderDto.shippingAddress.postalCode,
+        }
+      : {};
+
     // --- Step 3: Create the Order and OrderItems in a transaction ---
     // THIS HAPPENS *AFTER* THE LOOP
     const order = await this.prismaService.order.create({
       data: {
         total,
         userId,
+        ...addressData,
         items: {
           create: createOrderDto.items.map((item) => {
             const product = productMap.get(item.productId)!;

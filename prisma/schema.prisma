@@ -70,6 +70,10 @@ model Order {
   userId          Int
   user            User          @relation(fields: [userId], references: [id])
   items           OrderItem[]
+  shippingStreet    String?
+  shippingCity      String?
+  shippingProvince  String?
+  shippingPostalCode String?
 }
 
 model OrderItem {
